@@ -116,13 +116,22 @@ pub struct FbxDocument {
 
 fn is_binary(data: &[u8]) -> bool {
     let fbx_magic = b"Kaydara FBX Binary";
-    &data[0..18] == fbx_magic
+    data.len() >= 18 && &data[0..18] == fbx_magic
+}
+
+#[cfg(fuzzing)]
+#[allow(missing_docs)]
+pub fn fbx_from_bytes(data: &[u8])  -> Result<FbxDocument, FbxError> {
+    FbxDocument::from_bytes(data)
 }
 
 impl FbxDocument {
     pub async fn new<P: AsRef<Path>>(path: P) -> Result<FbxDocument, FbxError> {
         let data = io::load_file(path).await?;
+        FbxDocument::from_bytes(&data)
+    }
 
+    fn from_bytes(data: &[u8]) -> Result<FbxDocument, FbxError> {
         let is_bin = is_binary(&data);
 
         let mut reader = Cursor::new(data);

@@ -10,6 +10,9 @@ mod document;
 pub mod error;
 mod scene;
 
+#[cfg(fuzzing)]
+pub use document::fbx_from_bytes;
+
 use crate::resource::model::{MaterialSearchOptions, ModelImportOptions};
 use crate::scene::mesh::Mesh;
 use crate::scene::pivot::PivotBuilder;

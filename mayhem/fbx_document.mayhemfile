@@ -1,0 +1,7 @@
+project: fyrox
+target: fbx-document
+
+cmds:
+  - cmd: /fbx_document
+  - cmd: /fbx_document_no_inst @@
+    libfuzzer: false
